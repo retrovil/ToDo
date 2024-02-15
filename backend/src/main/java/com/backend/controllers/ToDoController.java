@@ -15,7 +15,7 @@ public class ToDoController{
     private final ToDoService todoService;
 
     @GetMapping("/todos")
-    public List<ToDo> fetchAllEmployees() {
+    public List<ToDo> fetchAllToDos() {
         return todoService.getAllToDo();
     }
 
