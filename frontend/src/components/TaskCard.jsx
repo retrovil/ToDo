@@ -1,16 +1,63 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { TaskFormPopUp } from "./TaskFormPopUp";
+import './TaskCard.css';
 
-export default function TaskCard({ toDo }) {
+export const TaskCard = ({ toDo, getToDoList }) => {
+  const [isOpenFormModal, setIsOpenFormModal] = useState(false);
+
+  const handleOpenFormModal = () => {
+    setIsOpenFormModal(true);
+  };
+
+  const handleChangeStateComplete = async () => {
+    try {
+      console.log(toDo);
+      const _id = toDo.id;
+
+      const res = await axios.patch(
+        `http://localhost:8085/api/v1/todolist/change-state/${_id}`
+      );
+
+      if (res.status === 200) {
+        getToDoList();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDeleteTask = async () => {
+    try {
+      console.log(toDo);
+      const _id = toDo.id;
+
+      const res = await axios.delete(
+        `http://localhost:8085/api/v1/todolist/todo/${_id}`
+      );
+
+      if (res.status === 200) {
+        getToDoList();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="">
-      <div className="max-w-sm p-6 m-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center ">
+      <div className="max-w-sm p-6 m-4 background border-black rounded-lg text-center">
         <a href="/">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {toDo.description}
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">
+            {toDo.title}
           </h5>
         </a>
-        <p className="mb-3 font-semibold text-gray-700 dark:text-gray-400">
-          {toDo.date}
+        <hr ></hr>
+        <p className="mb-3 font-semibold text-black dark:text-gray-400">
+          {toDo.description}
+        </p>
+        <p className="mb-3 font-semibold text-black dark:text-gray-400">
+          Date: {toDo.date}
         </p>
         <p
           className={`mb-3 font-semibold ${
@@ -20,30 +67,37 @@ export default function TaskCard({ toDo }) {
           {toDo.completed === 1 ? "Completed" : "To Complete"}
         </p>
         <div>
-          <a
-            href="/"
-            className="inline-flex mr-2 items-center px-3 py-2 text-sm font-medium text-center text-black bg-yellow-300 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          <button
+            onClick={handleOpenFormModal}
+            className="inline-flex mr-2 items-center px-3 py-2 text-sm font-medium text-center text-black bg-yellow-300 rounded-lg hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
           >
             Update
-          </a>
-          <a
-            href="/"
-            className="inline-flex mr-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          </button>
+          <button
+            onClick={handleDeleteTask}
+            className="inline-flex mr-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
           >
             Delete
-          </a>
+          </button>
           {toDo.completed === 0 ? (
-            <a
-              href="/"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            <button
+              onClick={handleChangeStateComplete}
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
             >
               Complete
-            </a>
+            </button>
           ) : (
             <></>
           )}
         </div>
       </div>
+
+      <TaskFormPopUp
+        toDo={toDo}
+        isOpenFormModal={isOpenFormModal}
+        setIsOpenFormModal={setIsOpenFormModal}
+        getToDoList={getToDoList}
+      />
     </div>
   );
-}
+};

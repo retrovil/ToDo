@@ -11,7 +11,8 @@ public interface IToDoService {
     public String saveToDo(ToDo to_do);
     Optional<ToDo> getToDoById(String id);
     Optional<ToDo> getToDoByEmail(String email);
-    Optional<ToDo> updateToDo(String id, ToDo partialEmployee);
+    Optional<ToDo> updateToDo(String id, ToDo todo);
+    Optional<ToDo> updateState(String id);
     void deleteToDo(String id);
     public List<ToDo> searchToDo(String query);
 

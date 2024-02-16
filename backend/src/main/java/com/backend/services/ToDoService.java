@@ -23,7 +23,13 @@ public class ToDoService implements IToDoService {
 
     @Override
     public String saveToDo(ToDo to_do) {
-        return toDoRepository.save(to_do).getId();
+
+        String id = "1";
+        if(toDoRepository.findAll().get(toDoRepository.findAll().size()) != null){
+            id = String.valueOf(toDoRepository.findAll().get(toDoRepository.findAll().size()).getId() + 1);
+        }
+        to_do.setId(id);
+        return toDoRepository.save(to_do).getId().toString();
     }
 
     @Override
@@ -37,13 +43,33 @@ public class ToDoService implements IToDoService {
     }
 
     @Override
-    public Optional<ToDo> updateToDo(String id, ToDo partialEmployee) {
-        return Optional.empty();
+    public Optional<ToDo> updateToDo(String id, ToDo todo) {
+        return Optional.ofNullable(toDoRepository.findById(id)
+                .map(existingTodo -> {
+                    existingTodo.setDescription(todo.getDescription());
+                    existingTodo.setDate(todo.getDate());
+
+                    System.out.println(existingTodo);
+                    return toDoRepository.save(existingTodo);
+                })
+                .orElseThrow(() -> new IllegalStateException("Task with id " + id + " not found")));
+    }
+
+    @Override
+    public Optional<ToDo> updateState(String id) {
+        return Optional.ofNullable(toDoRepository.findById(id)
+                .map(existingTodo -> {
+                    existingTodo.setCompleted(1);
+
+
+                    return toDoRepository.save(existingTodo);
+                })
+                .orElseThrow(() -> new IllegalStateException("Task with id " + id + " not found")));
     }
 
     @Override
     public void deleteToDo(String id) {
-
+        toDoRepository.deleteById(id);
     }
 
     @Override

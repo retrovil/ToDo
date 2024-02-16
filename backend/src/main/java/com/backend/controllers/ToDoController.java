@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/todolist")
@@ -24,4 +25,15 @@ public class ToDoController{
         return todoService.saveToDo(newToDO);
     }
 
+    @PatchMapping("/change-state/{id}")
+    public Optional changeState(@PathVariable String id){ return todoService.updateState(id);}
+
+    @PatchMapping("/update-todo/{id}")
+    public Optional updateTask(@PathVariable String id, @RequestBody ToDo todo){ return todoService.updateToDo(id, todo);}
+
+
+    @DeleteMapping("/todo/{id}")
+    public void deleteTask(@PathVariable String id){
+        todoService.deleteToDo(id);
+    }
 }
