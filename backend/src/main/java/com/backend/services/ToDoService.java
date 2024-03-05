@@ -24,9 +24,10 @@ public class ToDoService implements IToDoService {
     @Override
     public String saveToDo(ToDo to_do) {
 
-        String id = "1";
-        if(toDoRepository.findAll().get(toDoRepository.findAll().size()) != null){
-            id = String.valueOf(toDoRepository.findAll().get(toDoRepository.findAll().size()).getId() + 1);
+        String id = "";
+        System.out.println(toDoRepository.findAll().size() - 1);
+        if(toDoRepository.findAll().get(toDoRepository.findAll().size() - 1) != null){
+            id = String.valueOf(toDoRepository.findAll().get(toDoRepository.findAll().size() - 1).getId() + 1);
         }
         to_do.setId(id);
         return toDoRepository.save(to_do).getId().toString();

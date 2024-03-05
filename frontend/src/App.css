@@ -1,0 +1,29 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+:root {
+  --color-text: #616161;
+  --color-text-btn: #ffffff;
+  --card1-gradient-color1: #fd260e;
+  --card1-gradient-color2: #fa6e6e;
+  --card2-gradient-color1: #7f00ff;
+  --card2-gradient-color2: #e100ff;
+  --card3-gradient-color1: #3f2b96;
+  --card3-gradient-color2: #a8c0ff;
+  --card4-gradient-color1: #11998e;
+  --card4-gradient-color2: #38ef7d;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #ecf0f1;
+  height: 100vh;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.list-cards {
+    margin: 25px;
+}
